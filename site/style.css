@@ -1,0 +1,194 @@
+:root {
+  color-scheme: dark;
+  --ink: #e9fbff;
+  --muted: #8fb7c2;
+  --night: #04060b;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--night);
+  color: var(--ink);
+  font-family: Futura, "Futura PT", "Century Gothic", "Avenir Next", sans-serif;
+}
+
+.backdrop, .stages, .tone, .vignette {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.backdrop { z-index: 0; }
+
+.defs-host {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.stages { z-index: 1; pointer-events: none; }
+
+/* Film finish (see js/film.js): lifted teal blacks, then a vignette.
+   Grain is drawn in the sky canvas (js/sky.js). Only decor is softened;
+   lettering stays crisp. */
+.stage .decor { filter: blur(var(--film-blur, 0px)); }
+
+.tone {
+  z-index: 3;
+  pointer-events: none;
+  background: rgb(4 13 16);
+  mix-blend-mode: screen;
+}
+
+.vignette {
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 50%, rgb(4 8 10 / 0.6) 100%);
+}
+
+.no-film .tone, .no-film .post { display: none; }
+
+/* Holographic finish, above everything, lettering included: a slight
+   softness over the finished page, bloom, a slow rainbow sheen, drifting
+   light leaks, faint scanlines and grain. Sizes come from js/film.js. */
+/* No box for the wrapper: a fixed, z-indexed wrapper would be its own
+   stacking context, and the layers' blend modes would mix with that empty
+   box instead of the page beneath. */
+.post { display: contents; }
+
+.post > div {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Bloom: a blurred, contrast-boosted copy of the page screened back on
+   top, so only bright areas spill light. */
+.post-bloom {
+  backdrop-filter: blur(var(--post-bloom, 22px)) brightness(1.1) contrast(1.7) saturate(1.4);
+  mix-blend-mode: screen;
+  opacity: 0.2;
+}
+
+.post-soft { backdrop-filter: blur(var(--post-soft, 0.4px)); }
+
+.post-sheen {
+  background: linear-gradient(115deg,
+    transparent 30%,
+    rgb(255 120 200 / 0.55) 42%,
+    rgb(120 240 255 / 0.55) 50%,
+    rgb(255 240 150 / 0.5) 58%,
+    transparent 70%);
+  background-size: 260% 260%;
+  mix-blend-mode: color-dodge;
+  opacity: 0.1;
+  animation: post-sheen 9s linear infinite;
+}
+
+.post-leak {
+  background:
+    radial-gradient(40% 50% at 0% 12%, rgb(255 110 170 / 0.32), transparent 70%),
+    radial-gradient(45% 55% at 100% 90%, rgb(80 220 255 / 0.28), transparent 70%),
+    radial-gradient(30% 40% at 86% 4%, rgb(255 200 120 / 0.2), transparent 70%);
+  mix-blend-mode: screen;
+  animation: post-leak 14s ease-in-out infinite alternate;
+}
+
+.post-scan {
+  background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.16) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+.post-grain {
+  background-image: var(--grain-tile);
+  background-size: 192px 192px;
+  mix-blend-mode: overlay;
+  opacity: 0.18;
+  animation: post-grain 0.6s steps(6) infinite;
+}
+
+@keyframes post-sheen {
+  from { background-position: 115% 0; }
+  to { background-position: -15% 0; }
+}
+
+@keyframes post-leak {
+  from { opacity: 0.65; transform: translate(-2%, 0); }
+  to { opacity: 1; transform: translate(2%, 1%); }
+}
+
+@keyframes post-grain {
+  0% { background-position: 0 0; }
+  20% { background-position: -61px 37px; }
+  40% { background-position: 44px -83px; }
+  60% { background-position: -97px -19px; }
+  80% { background-position: 73px 58px; }
+  100% { background-position: 0 0; }
+}
+
+.stage, .layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.layer { overflow: visible; }
+
+/* Player chrome: a thin progress bar and a pause label, above the film. */
+.progress {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: env(safe-area-inset-bottom, 0px);
+  height: 3px;
+  z-index: 20;
+  background: rgb(255 255 255 / 0.08);
+}
+
+.progress > div {
+  height: 100%;
+  background: linear-gradient(90deg, #f4cd7c, #6fd0c8, #2cc0e6);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.paused-label {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  z-index: 20;
+  margin: 0;
+  translate: -50% 0;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.paused .paused-label { opacity: 1; }
+
+.capture .progress, .capture .paused-label { display: none; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-sheen, .post-leak, .post-grain { animation: none; }
+}

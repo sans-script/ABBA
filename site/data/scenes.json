@@ -1,0 +1,76 @@
+{
+  "scenes": [
+    {
+      "id": "hello-world",
+      "lines": [
+        ["Hello"],
+        ["World"]
+      ],
+      "writeOn": ["World"],
+      "duration": 4,
+      "tilt": -6,
+      "rowShift": 0.3,
+      "decor": "constellation-a"
+    },
+    {
+      "id": "compile-my-heart",
+      "lines": [
+        ["Compile", "My"],
+        ["Heart"]
+      ],
+      "writeOn": ["Heart"],
+      "duration": 4,
+      "tilt": 4,
+      "rowShift": 0.35,
+      "decor": "moonrise"
+    },
+    {
+      "id": "prompt-me-gently",
+      "lines": [
+        ["Prompt", "Me"],
+        ["Gently"]
+      ],
+      "writeOn": ["Gently"],
+      "duration": 4,
+      "tilt": -4,
+      "rowShift": 0.25,
+      "decor": "orbit"
+    },
+    {
+      "id": "claude-code-forever",
+      "lines": [
+        ["Claude", "Code"],
+        ["Forever"]
+      ],
+      "writeOn": ["Forever"],
+      "duration": 4,
+      "tilt": -7,
+      "rowShift": 0.2,
+      "decor": "prism"
+    },
+    {
+      "id": "ship-it-tonight",
+      "lines": [
+        ["Ship", "It"],
+        ["Tonight"]
+      ],
+      "writeOn": ["Tonight"],
+      "duration": 4,
+      "tilt": 5,
+      "rowShift": 0.25,
+      "decor": "storm"
+    },
+    {
+      "id": "no-bugs-just-vibes",
+      "lines": [
+        ["No", "Bugs"],
+        ["Just", "Vibes"]
+      ],
+      "writeOn": ["Vibes"],
+      "duration": 4,
+      "tilt": -5,
+      "rowShift": 0.14,
+      "decor": "constellation-a"
+    }
+  ]
+}

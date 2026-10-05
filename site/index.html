@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>No Bugs, Just Vibes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="sky" class="backdrop" aria-hidden="true"></canvas>
+  <div id="stages" class="stages"></div>
+  <div id="tone" class="tone" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- Current line for screen readers; the stage itself is decorative. -->
+  <p id="caption" class="sr-only" aria-live="polite"></p>
+
+  <div class="progress" aria-hidden="true"><div id="progress"></div></div>
+  <p class="paused-label" aria-hidden="true">Paused</p>
+
+  <!-- Holographic finish over everything (see js/film.js, style.css). -->
+  <div class="post" aria-hidden="true">
+    <div class="post-soft"></div>
+    <div class="post-bloom"></div>
+    <div class="post-sheen"></div>
+    <div class="post-leak"></div>
+    <div class="post-scan"></div>
+    <div class="post-grain"></div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
