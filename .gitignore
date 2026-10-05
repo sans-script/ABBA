@@ -10,16 +10,6 @@ __pycache__/
 venv/
 env/
 
-# Model checkpoints and local caches
-**/cache/
-**/checkpoints/
-*.pth
-
-# Generated decomposition data
-**/outputs/
-**/_outputs/
-**/inputs/
-
 # Local IDE / OS files
 .vscode/
 .idea/
