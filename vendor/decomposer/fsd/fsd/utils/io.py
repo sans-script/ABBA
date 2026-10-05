@@ -111,14 +111,17 @@ def read_gif_imageio(path: str, height: Optional[int] = None, require_alpha: boo
 def read_gif_pillow(
     path: str, height: Optional[int] = None, require_alpha: bool = True
 ) -> List[np.ndarray]:
+    # Pillow composites each APNG frame onto the canvas (APNG stores frames
+    # after the first as cropped deltas); the raw chunks from the `apng`
+    # library would come back with varying sizes.
     with fsspec.open(path, "rb") as f:
-        apng = APNG.open(f)
+        image = Image.open(io.BytesIO(f.read()))
 
     frames = []
 
-    for png, _ in apng.frames:
-        image = Image.open(io.BytesIO(png.to_bytes())).convert("RGBA")
-        frame = np.array(image)
+    for i in range(getattr(image, "n_frames", 1)):
+        image.seek(i)
+        frame = np.array(image.convert("RGBA"))
 
         if height is not None:
             width = round(frame.shape[1] * height / frame.shape[0])
