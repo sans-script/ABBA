@@ -1,3 +1,4 @@
 ﻿# Runtime / analysis dependencies
 yt-dlp
 opencv-python
+Pillow

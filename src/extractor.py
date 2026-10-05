@@ -14,30 +14,30 @@ Requirements:
 Examples:
 
     # Extract 100 evenly spaced frames from the entire video
-    python extract_frames.py --count 100
+    python src/extractor.py --count 100
 
     # Extract 5 frames per second from the entire video
-    python extract_frames.py --fps 5
+    python src/extractor.py --fps 5
 
     # Extract 60 consecutive frames from a transition
-    python extract_frames.py --start 12.5 --end 14.0 --fps 60
+    python src/extractor.py --start 12.5 --end 14.0 --fps 60
 
     # Extract every frame from a short transition
-    python extract_frames.py --start 12.5 --end 14.0 --all
+    python src/extractor.py --start 12.5 --end 14.0 --all
 
     # Detect likely scene changes
-    python extract_frames.py --scenes
+    python src/extractor.py --scenes
 
     # Generate a contact sheet from extracted frames
-    python extract_frames.py --count 100 --contact-sheet
+    python src/extractor.py --count 100 --contact-sheet
 
 Output structure:
 
     analysis/
     ├── metadata.txt
     ├── frames/
-    │   ├── frame_000001_t0000.000s.png
-    │   ├── frame_000002_t0000.350s.png
+    │   ├── 000001__frame-00000000__t-00h00m00s000ms.png
+    │   ├── 000002__frame-00000009__t-00h00m00s360ms.png
     │   └── ...
     └── contact_sheet.jpg
 """
@@ -53,7 +53,7 @@ from pathlib import Path
 import cv2
 
 
-DEFAULT_VIDEO = "ABBA - Lay All Your Love On Me.mp4"
+DEFAULT_VIDEO = "media/ABBA - Lay All Your Love On Me.mp4"
 DEFAULT_OUTPUT = "analysis"
 
 

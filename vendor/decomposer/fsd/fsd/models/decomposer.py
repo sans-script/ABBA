@@ -264,7 +264,7 @@ class SpritesDecomposer(Sprites):
     def load_checkpoint(self, checkpoint_path: Optional[str] = None, strict_config: bool = True) -> None:
         checkpoint_path = checkpoint_path or osp.join(self.out_dir, "last_checkpoint.pth")
         with fsspec.open(checkpoint_path, "br") as f:
-            checkpoint = tr.load(f, map_location=self.device)
+            checkpoint = tr.load(f, map_location=self.device, weights_only=False)  # holds cfg/optimizer, not just tensors
         if self.cfg != checkpoint["cfg"]:
             if strict_config:
                 assert self.cfg == checkpoint["cfg"], "Config is different, but strict_config is True"
